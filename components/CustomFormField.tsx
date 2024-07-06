@@ -13,7 +13,7 @@ import React from "react"
 import Image from "next/image"
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
-
+// import { E164Number } from "react-phone-number-input"
 
 interface CustomProps {
     control: Control<any>,
@@ -61,6 +61,7 @@ const RenderField = ({ field, props }: { field: any, props: CustomProps }) => {
                         value={field.value as E164Number | undefined}
                         onChange={field.onChange}
                         className="input-phone "
+
                     />
                 </FormControl>
             );
