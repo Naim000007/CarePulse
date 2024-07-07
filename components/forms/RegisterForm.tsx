@@ -12,9 +12,13 @@ import { UserFormValidation } from "@/lib/validation"
 import { useRouter } from "next/navigation"
 import { createUser } from "@/lib/actions/patient.actions"
 import { FormFieldType } from "./PatientForm"
-import { GenderOptions } from "@/constants"
+import { Doctors, GenderOptions, IdentificationTypes } from "@/constants"
 import { Label } from "../ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import Image from "next/image"
+import FileUploader from "../ui/FileUploader"
+
 
 export function RegisterForm({ user }: { user: User }) {
     const router = useRouter()
@@ -106,18 +110,20 @@ export function RegisterForm({ user }: { user: User }) {
                             label="Gender"
                             renderSkeleton={(field) => (
                                 <FormControl>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select Gender" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {GenderOptions.map((option, i) => (
-                                                <SelectItem key={option + i} value={option}>
+                                    <RadioGroup
+                                        className="flex h-11 gap-6 xl:justify-between"
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                    >
+                                        {GenderOptions.map((option, i) => (
+                                            <div key={option + i} className="radio-group">
+                                                <RadioGroupItem value={option} id={option} />
+                                                <Label htmlFor={option} className="cursor-pointer">
                                                     {option}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                                </Label>
+                                            </div>
+                                        ))}
+                                    </RadioGroup>
                                 </FormControl>
                             )}
                         />
@@ -175,7 +181,7 @@ export function RegisterForm({ user }: { user: User }) {
                         label="Primary care physician"
                         placeholder="Select a physician"
                     >
-                        {/* {Doctors.map((doctor, i) => (
+                        {Doctors.map((doctor, i) => (
                             <SelectItem key={doctor.name + i} value={doctor.name}>
                                 <div className="flex cursor-pointer items-center gap-2">
                                     <Image
@@ -188,7 +194,7 @@ export function RegisterForm({ user }: { user: User }) {
                                     <p>{doctor.name}</p>
                                 </div>
                             </SelectItem>
-                        ))} */}
+                        ))}
                     </CustomFormField>
 
                     {/* INSURANCE & POLICY NUMBER */}
@@ -261,11 +267,11 @@ export function RegisterForm({ user }: { user: User }) {
                         label="Identification Type"
                         placeholder="Select identification type"
                     >
-                        {/* {IdentificationTypes.map((type, i) => (
-                            <SelectItem key={type + i} value={type}>
+                        {IdentificationTypes.map((type, i) => (
+                            <SelectItem key={type + i} value={type} style={{ cursor: 'pointer' }}>
                                 {type}
                             </SelectItem>
-                        ))} */}
+                        ))}
                     </CustomFormField>
 
                     <CustomFormField
@@ -276,7 +282,7 @@ export function RegisterForm({ user }: { user: User }) {
                         placeholder="123456789"
                     />
 
-                    {/* <CustomFormField
+                    <CustomFormField
                         fieldType={FormFieldType.SKELETON}
                         control={form.control}
                         name="identificationDocument"
@@ -286,21 +292,19 @@ export function RegisterForm({ user }: { user: User }) {
                                 <FileUploader files={field.value} onChange={field.onChange} />
                             </FormControl>
                         )}
-                    /> */}
+                    />
                 </section>
 
                 <section className="space-y-6">
                     <div className="mb-9 space-y-1">
                         <h2 className="sub-header">Consent and Privacy</h2>
                     </div>
-
                     <CustomFormField
                         fieldType={FormFieldType.CHECKBOX}
                         control={form.control}
                         name="treatmentConsent"
                         label="I consent to receive treatment for my health condition."
                     />
-
                     <CustomFormField
                         fieldType={FormFieldType.CHECKBOX}
                         control={form.control}
